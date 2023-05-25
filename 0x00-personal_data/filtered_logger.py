@@ -4,6 +4,5 @@ import re
 
 
 def filter_datum(fields, redaction, message, separator):
-    """ Filter Datum """
-    pattern = '|'.join([f'(?<={field}=)[^;]*' for field in fields])
+    pattern = '|'.join([f'(?<={field}=)[^{separator}]*' for field in fields])
     return re.sub(pattern, redaction, message)
