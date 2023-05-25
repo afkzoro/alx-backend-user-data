@@ -33,7 +33,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return re.sub(pattern, redaction, message)
 
 
-PII_FIELDS = ("email", "password", "phone", "date_of_birth", "ssn")
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
 def get_logger() -> logging.Logger:
