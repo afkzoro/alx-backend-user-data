@@ -70,3 +70,37 @@ def get_db() -> MySQLConnection:
     )
 
     return connection
+
+
+def main() -> None:
+    """
+    Obtains a database connection, retrieves all rows from the users table,
+    and displays each row under a filtered format.
+    """
+
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+    connection = get_db()
+
+    try:
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users")
+        rows = cursor.fetchall()
+
+        for row in rows:
+            filtered_row = {key: '***' if key in PII_FIELDS else value for
+                            key, value in row.items()}
+            logger.info(filtered_row)
+        connection.commit()
+
+    except Exception as e:
+        connection.rollback()
+        logger.error(str(e))
+
+    finally:
+        cursor.close()
+        connection.close()
+
+
+if __name__ == '__main__':
+    main()
