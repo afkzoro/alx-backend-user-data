@@ -4,6 +4,8 @@ import fnmatch
 
 
 class Auth:
+    """ Auth class
+    """
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         if path is None:
             return True
