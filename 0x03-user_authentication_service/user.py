@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" user config for Auth """
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
