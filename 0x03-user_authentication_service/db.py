@@ -41,7 +41,12 @@ class DB:
         Returns:
             User: The newly created User object
         """
+        DBSession = sessionmaker(bind=self._engine)
+        session = DBSession()
+
         user = User(email=email, hashed_password=hashed_password)
-        self._session.add(user)
-        self._session.commit()
+        session.add(user)
+        session.commit()
+
+        session.close()
         return user
