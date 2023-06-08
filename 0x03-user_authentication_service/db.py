@@ -6,8 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
-from user import User
-from user import Base
+from user import User, Base
 
 
 class DB:
@@ -41,12 +40,9 @@ class DB:
         Returns:
             User: The newly created User object
         """
-        DBSession = sessionmaker(bind=self._engine)
-        session = DBSession()
 
         user = User(email=email, hashed_password=hashed_password)
-        session.add(user)
-        session.commit()
+        self._session.add(user)
+        self._session.commit()
 
-        session.close()
         return user
