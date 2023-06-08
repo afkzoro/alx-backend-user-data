@@ -7,6 +7,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.exc import IntegrityError
 from user import User, Base
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 
 
 class DB:
@@ -46,3 +48,24 @@ class DB:
         self._session.commit()
 
         return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """Find a user in the database by filtering with keyword arguments
+
+        Args:
+            kwargs: Arbitrary keyword arguments for filtering the query
+
+        Returns:
+            User: The first user found matching the filter criteria
+
+        Raises:
+            NoResultFound: If no user is found matching the filter criteria
+            InvalidRequestError: If invalid query arguments are passed
+        """
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if user is None:
+                raise NoResultFound("No user found")
+            return user
+        except InvalidRequestError as e:
+            raise e
